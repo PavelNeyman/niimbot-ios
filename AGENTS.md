@@ -964,7 +964,7 @@ Status:
 
 Status:
 
-**Phase 1 in progress** (Repository Foundation)
+**Phase 1 complete** (Repository Foundation)
 
 ---
 
@@ -972,7 +972,7 @@ Status:
 
 Status:
 
-**Current** (AGENTS EN+RU full volume v1.0, README, Roadmap)
+**Complete** (AGENTS EN+RU full volume v1.0, README, Roadmap, LICENSE)
 
 ---
 
@@ -980,7 +980,7 @@ Status:
 
 Status:
 
-**Phase 1 tasks pending**
+**Phase 1 complete** (Repository Foundation)
 
 ---
 
