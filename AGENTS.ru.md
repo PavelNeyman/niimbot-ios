@@ -964,7 +964,7 @@ Process.swift
 
 Статус:
 
-**Phase 2 complete** (Xcode Project Setup)
+**Phase 3 complete** (Printer Connection)
 
 ---
 
@@ -980,9 +980,9 @@ Process.swift
 
 Статус:
 
-**Phase 2 complete** (Xcode Project Setup)
+**Phase 3 complete** (Printer Connection)
 
-**Phase 1 tasks pending**
+**Phase 2 complete** (Xcode Project Setup)
 
 ---
 
@@ -1016,13 +1016,22 @@ Process.swift
 
 ---
 
-## Phase 3 — Core Features
+## Phase 3 — Printer Connection
 
-- [ ] CoreBluetooth client for NIIMBOT
-- [ ] NSLocalSocket client for USB
-- [ ] Connection state management
-- [ ] Printer info fetching
-- [ ] Heartbeat mechanism
+- [x] NiimbotAbstractClient базовый класс
+- [x] NiimbotBluetoothClient (CoreBluetooth)
+- [x] NiimbotSerialClient (NSLocalSocket для USB)
+- [x] Модель PrinterInfo
+- [x] ViewModel PrinterConnectionStore
+- [x] Обновленный PrinterConnectorView со статусом подключения
+- [x] Определения NiimbotCommands
+- [x] Реализация ZPLGenerator
+- [x] Модели ObjectType и LabelObject
+- [x] Все контролы объектов (Текст, QR, Штрихкод, Изображение, Фигура)
+- [x] LabelPropsEditor
+- [x] ObjectPicker
+
+**Статус: Фаза 3 завершена**
 
 ---
 

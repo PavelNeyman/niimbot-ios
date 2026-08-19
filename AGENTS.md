@@ -1016,13 +1016,22 @@ Changing the implementation order requires explicit approval.
 
 ---
 
-## Phase 3 — Core Features
+## Phase 3 — Printer Connection
 
-- [ ] CoreBluetooth client for NIIMBOT
-- [ ] NSLocalSocket client for USB
-- [ ] Connection state management
-- [ ] Printer info fetching
-- [ ] Heartbeat mechanism
+- [x] NiimbotAbstractClient base class
+- [x] NiimbotBluetoothClient (CoreBluetooth)
+- [x] NiimbotSerialClient (NSLocalSocket for USB)
+- [x] PrinterInfo model
+- [x] PrinterConnectionStore ViewModel
+- [x] Updated PrinterConnectorView with connection state
+- [x] NiimbotCommands definitions
+- [x] ZPLGenerator implementation
+- [x] ObjectType and LabelObject models
+- [x] All object controls (Text, QR, Barcode, Image, Shape)
+- [x] LabelPropsEditor
+- [x] ObjectPicker
+
+**Status: Phase 3 complete**
 
 ---
 
