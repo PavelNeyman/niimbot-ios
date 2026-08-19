@@ -1,4 +1,5 @@
 import Foundation
+import NiimBlueiOS
 
 /// Параметры печати этикетки
 struct LabelParams: Codable {
