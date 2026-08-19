@@ -964,7 +964,7 @@ Process.swift
 
 Статус:
 
-**Phase 1 in progress** (Repository Foundation)
+**Phase 2 complete** (Xcode Project Setup)
 
 ---
 
@@ -979,6 +979,8 @@ Process.swift
 ## Implementation
 
 Статус:
+
+**Phase 2 complete** (Xcode Project Setup)
 
 **Phase 1 tasks pending**
 
@@ -1006,11 +1008,11 @@ Process.swift
 
 ## Phase 2 — Xcode Project Setup
 
-- [ ] Create Xcode project with SwiftUI
-- [ ] Configure Info.plist (Bluetooth, Serial permissions)
-- [ ] Create asset catalog
-- [ ] Configure signing and capabilities
-- [ ] Create basic app entry point
+- [x] Create Xcode project with SwiftUI
+- [x] Configure Info.plist (Bluetooth, Serial permissions)
+- [x] Create asset catalog
+- [x] Configure signing and capabilities
+- [x] Create basic app entry point
 
 ---
 

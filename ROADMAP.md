@@ -642,10 +642,10 @@ NiimBlueiOS/
 - [x] Создание ROADMAP.md
 - [x] Создание структуры проекта
 
-### В процессе:
-- [ ] Создание NiimBlueiOS.xcodeproj
-- [ ] Настройка Info.plist
-- [ ] Создание базовых экранов
+### Выполнено:
+- [x] Создание NiimBlueiOS.xcodeproj
+- [x] Настройка Info.plist (Bluetooth, Serial, LocalNetwork permissions)
+- [x] Создание базовых экранов
 
 ### Осталось:
 - [ ] Фаза 2: Подключение к принтеру
@@ -662,9 +662,8 @@ NiimBlueiOS/
 
 ## 🚀 Следующие шаги
 
-1. **Создать Xcode проект** (Фаза 1)
-2. **Настроить Info.plist** с разрешениями
-3. **Создать базовые экраны** SwiftUI
+1. **Фаза 2: Подключение к принтеру** (NiimbotBluetoothClient, NiimbotSerialClient)
+2. **Фаза 3: Визуальный редактор** (SwiftUI canvas, controls)
 
 ---
 
