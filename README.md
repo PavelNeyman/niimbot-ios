@@ -80,7 +80,9 @@ NiimBlueiOS/
 │   │   ├── LabelDesignerView.swift
 │   │   ├── PrintPreviewView.swift
 │   │   ├── SettingsView.swift
-│   │   └── SavedLabelsView.swift
+│   │   ├── SavedLabelsView.swift
+│   │   ├── FontPickerView.swift
+│   │   └── IconPickerView.swift
 │   ├── ViewModels/
 │   │   └── (view models)
 │   ├── Services/
@@ -89,7 +91,10 @@ NiimBlueiOS/
 │   │   ├── NiimbotSerialClient.swift
 │   │   ├── LabelStorage.swift
 │   │   ├── ZPLGenerator.swift
-│   │   └── ImagePostProcessor.swift
+│   │   ├── ImagePostProcessor.swift
+│   │   ├── FontManager.swift
+│   │   ├── IconManager.swift
+│   │   └── CsvParser.swift
 │   ├── Models/
 │   │   ├── PrinterInfo.swift
 │   │   ├── ExportedLabelTemplate.swift
@@ -97,7 +102,9 @@ NiimBlueiOS/
 │   │   ├── AppConfig.swift
 │   │   ├── LabelObject.swift
 │   │   ├── LabelParams.swift
-│   │   └── NiimbotCommands.swift
+│   │   ├── NiimbotCommands.swift
+│   │   ├── UserFont.swift
+│   │   └── UserIcon.swift
 │   └── Controls/
 │       ├── ObjectPicker.swift
 │       ├── TextParamsControls.swift
@@ -105,7 +112,9 @@ NiimBlueiOS/
 │       ├── BarcodeParamsControls.swift
 │       ├── ImageParamsControls.swift
 │       ├── ShapeParamsControls.swift
-│       └── LabelPropsEditor.swift
+│       ├── LabelPropsEditor.swift
+│       ├── FontSelector.swift
+│       └── IconSelector.swift
 
 ├── NiimBlueiOSTests/
 
@@ -185,10 +194,15 @@ xcodebuild -scheme NiimBlueiOS -destination 'platform=iOS Simulator,name=iPhone 
 - Variable interpolation
 - Batch print support
 
-**Phase 8 - User Fonts and Icons**
-- Custom fonts support
-- Custom icons support
-- Font manager
+ **Phase 8 - User Fonts and Icons** (Complete)
+- [x] Custom fonts support
+- [x] Custom icons support
+- [x] Font manager (FontManager service)
+- [x] Icon manager (IconManager service)
+- [x] Font picker UI (FontPickerView, FontSelector)
+- [x] Icon picker UI (IconPickerView, IconSelector)
+- [x] Integration into TextParamsControls
+- [x] Integration into LabelEditorView
 
 **Phase 9 - Settings**
 - Application configuration

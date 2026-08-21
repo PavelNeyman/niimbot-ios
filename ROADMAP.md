@@ -458,10 +458,37 @@ NiimBlueiOS/
 
 ---
 
-### **Фаза 7: Пользовательские шрифты и иконки** (2 недели)
+### **Фаза 7: Пользовательские шрифты и иконки** (2 недели) - **COMPLETED**
 
 #### Цель
 Поддержка пользовательских шрифтов и иконок.
+
+#### Выполнено:
+- [x] UserFont model
+- [x] UserIcon model  
+- [x] FontManager service
+- [x] Font loading and storage
+- [x] Font picker UI
+- [x] Integration into TextParamsControls
+
+#### Результат
+- Загрузка пользовательских шрифтов
+- Выбор шрифтов в редакторе
+- Хранение шрифтов в приложении
+
+#### Файлы созданы
+- Models/UserFont.swift
+- Models/UserIcon.swift
+- Services/FontManager.swift
+- Controls/FontSelector.swift
+- Views/FontPickerView.swift
+
+---
+
+### **Фаза 8: Share Extensions** (1-2 недели)
+
+#### Цель
+Интеграция с Share Extension для печати через Shortcuts.
 
 #### Задачи
 
