@@ -1,177 +1,257 @@
 import Foundation
 
-/// Генератор ZPL кода для печати на NIIMBOT принтерах
-class ZPLGenerator {
+/// Генератор ZPL кода
+final class ZPLGenerator {
     
-    // MARK: - Constants
+    // MARK: - Generate ZPL
     
-    private static let zplHeader = "^XA\n"
-    private static let zplFooter = "^XZ\n"
-    private static let defaultDensity = "256"
-    private static let defaultSpeed = "5"
-    private static let defaultMemoryMode = "2"
-    
-    // MARK: - Public Methods
-    
-    static func generate(label: PrinterInfo, objects: [LabelObject]) -> String {
-        var zpl = zplHeader
+    /// Сгенерировать ZPL код для этикетки
+    static func generateZPL(
+        template: ExportedLabelTemplate,
+        params: PrintParams,
+        objects: [LabelObject]? = nil
+    ) -> String {
+        let objectsToPrint = objects ?? template.objects
         
-        // Set memory mode
-        zpl += "^DM\(defaultMemoryMode)\n"
-        
-        // Set density
-        zpl += "^LD\(defaultDensity)\n"
-        
-        // Set speed
-        zpl += "^MS\(defaultSpeed)\n"
-        
-        // Generate label
-        zpl += generateLabel(label: label, objects: objects)
-        
-        zpl += zplFooter
-        
-        return zpl
-    }
-    
-    private static func generateLabel(label: PrinterInfo, objects: [LabelObject]) -> String {
         var zpl = ""
         
-        // Set paper width and height
-        zpl += "^PW\(label.capabilities["width"] ?? "203")\n"
-        zpl += "^PH\(label.capabilities["height"] ?? "100")\n"
+        // Заголовок
+        zpl += "^X1N\n"
+        zpl += "^MT1\n"
+        zpl += "^PW\(template.labelParams.width)\n"
+        zpl += "^PH\(template.labelParams.height)\n"
+        zpl += "^FS\n"
+        zpl += "^BY2\n"
+        zpl += "^JD\(template.labelParams.density)\n"
+        zpl += "^LP\(template.labelParams.printDirection == .left ? "L" : "R")\n"
+        zpl += "^DE\(template.labelParams.shape)\n"
+        zpl += "^JL\(template.labelParams.split.rawValue)\n"
+        zpl += "^LS\(template.labelParams.tailPos.rawValue)\n"
+        zpl += "^BM\(template.labelParams.margin.rawValue)\n"
         
-        // Generate objects
-        for object in objects {
-            zpl += generateObjectZPL(object: object)
+        // Генерируем объекты
+        for object in objectsToPrint {
+            zpl += generateObjectZPL(object)
         }
+        
+        // Конец документа
+        zpl += "^RF\n"
         
         return zpl
     }
     
-    private static func generateObjectZPL(object: LabelObject) -> String {
+    /// Сгенерировать ZPL для одного объекта
+    private static func generateObjectZPL(_ object: LabelObject) -> String {
         var zpl = ""
         
         switch object.type {
-        case .text(let textParams):
-            zpl += generateTextZPL(textParams: textParams)
-        case .qrcode(let qrParams):
-            zpl += generateQRCodeZPL(qrParams: qrParams)
-        case .barcode(let barcodeParams):
-            zpl += generateBarcodeZPL(barcodeParams: barcodeParams)
-        case .image(let imageParams):
-            zpl += generateImageZPL(imageParams: imageParams)
-        case .shape(let shapeParams):
-            zpl += generateShapeZPL(shapeParams: shapeParams)
+        case .text:
+            if let textParams = object.textParams {
+                zpl += generateTextZPL(object, textParams)
+            }
+            
+        case .qrcode:
+            if let qrcodeParams = object.qrCodeParams {
+                zpl += generateQRCodeZPL(object, qrcodeParams)
+            }
+            
+        case .barcode:
+            if let barcodeParams = object.barcodeParams {
+                zpl += generateBarcodeZPL(object, barcodeParams)
+            }
+            
+        case .image:
+            if let imageParams = object.imageParams {
+                zpl += generateImageZPL(object, imageParams)
+            }
+            
+        case .shape:
+            if let shapeParams = object.shapeParams {
+                zpl += generateShapeZPL(object, shapeParams)
+            }
         }
         
         return zpl
     }
     
-    // MARK: - Text Generation
+    // MARK: - Text Object
     
-    private static func generateTextZPL(textParams: TextParams) -> String {
+    private static func generateTextZPL(_ object: LabelObject, _ params: LabelObject.TextParams) -> String {
         var zpl = ""
         
-        // Position
-        zpl += "^FS\(textParams.x, \(textParams.y))\n"
+        // Позиция
+        zpl += "^X\(Int(object.x))\n"
+        zpl += "^Y\(Int(object.y))\n"
         
-        // Font
-        zpl += "^A\(textParams.fontFamily)\n"
+        // Размер шрифта
+        zpl += "^A\(params.fontSize)\n"
         
-        // Size
-        zpl += "^F\(textParams.fontSize)\n"
+        // Выравнивание
+        zpl += "^A\(textAlignToZPL(params.justify))\n"
         
-        // Justify
-        zpl += "^JD\(textParams.justify)\n"
+        // Жирный курсив
+        zpl += "^FN\(params.bold ? 1 : 0)\n"
+        zpl += "^F\(params.italic ? 1 : 0)\n"
         
-        // Content
-        zpl += "\"\(textParams.content)\""
+        // Текст
+        zpl += "^A0N,BC,NA,\"\(escapeText(params.content))\"\n"
         
         return zpl
     }
     
-    // MARK: - QR Code Generation
+    // MARK: - QR Code Object
     
-    private static func generateQRCodeZPL(qrParams: QRCodeParams) -> String {
+    private static func generateQRCodeZPL(_ object: LabelObject, _ params: LabelObject.QRCodeParams) -> String {
         var zpl = ""
         
-        // Position
-        zpl += "^FS\(qrParams.x, \(qrParams.y))\n"
+        // Позиция
+        zpl += "^X\(Int(object.x))\n"
+        zpl += "^Y\(Int(object.y))\n"
         
-        // QR Code
-        zpl += "^BQN\(qrParams.dataLength),\(qrParams.errorCorrectionLevel),\(qrParams.moduleSize)QR\(qrParams.data)N"
+        // Уровень коррекции ошибок
+        zpl += "^BY\(qrErrorCorrectionToZPL(params.errorCorrectionLevel))\n"
+        
+        // Данные
+        zpl += "^BWO\(params.dataLength),\(params.moduleSize),\"\(escapeText(params.data))\"\n"
         
         return zpl
     }
     
-    // MARK: - Barcode Generation
+    // MARK: - Barcode Object
     
-    private static func generateBarcodeZPL(barcodeParams: BarcodeParams) -> String {
+    private static func generateBarcodeZPL(_ object: LabelObject, _ params: LabelObject.BarcodeParams) -> String {
         var zpl = ""
         
-        // Position
-        zpl += "^FS\(barcodeParams.x, \(barcodeParams.y))\n"
+        // Позиция
+        zpl += "^X\(Int(object.x))\n"
+        zpl += "^Y\(Int(object.y))\n"
         
-        // Barcode
-        zpl += "^B\(barcodeParams.type.rawValue)\(barcodeParams.width),\(barcodeParams.height)\"\(barcodeParams.data)\""
+        // Тип штрихкода
+        zpl += "^BY\(barcodeTypeToZPL(params.type))\n"
+        
+        // Ширина и высота
+        zpl += "^BWX\(params.width),\(params.height)\n"
+        
+        // Показать текст
+        zpl += "^BTO\(params.showText ? 1 : 0)\n"
+        
+        // Данные
+        zpl += "^BTA,NA,\"\(escapeText(params.data))\"\n"
         
         return zpl
     }
     
-    // MARK: - Image Generation
+    // MARK: - Image Object
     
-    private static func generateImageZPL(imageParams: ImageParams) -> String {
+    private static func generateImageZPL(_ object: LabelObject, _ params: LabelObject.ImageParams) -> String {
         var zpl = ""
         
-        // Position
-        zpl += "^FS\(imageParams.x, \(imageParams.y))\n"
+        // Позиция
+        zpl += "^X\(Int(object.x))\n"
+        zpl += "^Y\(Int(object.y))\n"
         
-        // Image
-        // Note: Actual image data should be embedded here
-        // For now, using placeholder
+        // Ширина и высота
+        zpl += "^IMG\(params.width),\(params.height),1\n"
+        
+        // Источник изображения (placeholder)
+        zpl += "^IMG\(params.source)\n"
         
         return zpl
     }
     
-    // MARK: - Shape Generation
+    // MARK: - Shape Object
     
-    private static func generateShapeZPL(shapeParams: ShapeParams) -> String {
+    private static func generateShapeZPL(_ object: LabelObject, _ params: LabelObject.ShapeParams) -> String {
         var zpl = ""
         
-        // Position
-        zpl += "^FS\(shapeParams.x, \(shapeParams.y))\n"
+        // Позиция
+        zpl += "^X\(Int(object.x))\n"
+        zpl += "^Y\(Int(object.y))\n"
         
-        // Shape
-        switch shapeParams.type {
-        case .circle:
-            zpl += "^GD\(shapeParams.width),\(shapeParams.height)O"
-        case .rectangle:
-            zpl += "^GD\(shapeParams.width),\(shapeParams.height)R"
-        case .line:
-            zpl += "^GD\(shapeParams.width),\(shapeParams.height)L"
+        // Размер
+        zpl += "^PW\(params.width)\n"
+        zpl += "^PH\(params.height)\n"
+        
+        // Цвет
+        zpl += "^BC\(colorToZPL(params.color))\n"
+        
+        // Ширина линии
+        zpl += "^BLS\(params.strokeWidth)\n"
+        
+        return zpl
+    }
+    
+    // MARK: - Helpers
+    
+    private static func fontFamilyToZPL(_ fontFamily: String) -> String {
+        // Простая маппинг шрифтов
+        switch fontFamily {
+        case "monospace":
+            return "M"
+        default:
+            return "S"
         }
-        
-        return zpl
     }
     
-    // MARK: - Utility Methods
+    private static func textAlignToZPL(_ align: LabelObject.TextParams.Justify) -> String {
+        switch align {
+        case .left:
+            return "L"
+        case .center:
+            return "C"
+        case .right:
+            return "R"
+        }
+    }
     
-    static func escapeZPLString(_ string: String) -> String {
-        var escaped = string
-        escaped = escaped.replacingOccurrences(of: "\\", with: "\\\\")
-        escaped = escaped.replacingOccurrences(of: "\"", with: "\\\"")
-        escaped = escaped.replacingOccurrences(of: "\n", with: "\\n")
-        escaped = escaped.replacingOccurrences(of: "\r", with: "\\r")
-        escaped = escaped.replacingOccurrences(of: "\t", with: "\\t")
-        
+    private static func qrErrorCorrectionToZPL(_ level: LabelObject.QRCodeParams.ErrorCorrectionLevel) -> String {
+        switch level {
+        case .low:
+            return "1"
+        case .medium:
+            return "2"
+        case .quartile:
+            return "3"
+        case .high:
+            return "4"
+        }
+    }
+    
+    private static func barcodeTypeToZPL(_ type: LabelObject.BarcodeParams.Type) -> String {
+        switch type {
+        case .code128:
+            return "2"
+        case .code39:
+            return "3"
+        case .ean13:
+            return "1"
+        case .upc:
+            return "10"
+        }
+    }
+    
+    private static func escapeText(_ text: String) -> String {
+        var escaped = ""
+        for char in text {
+            switch char {
+            case "\n":
+                escaped += "\\n"
+            case "\t":
+                escaped += "\\t"
+            case "\"":
+                escaped += "\\\""
+            default:
+                escaped += String(char)
+            }
+        }
         return escaped
     }
     
-    static func validateZPL(_ zpl: String) -> (isValid: Bool, message: String) {
-        if !zpl.hasPrefix("^XA") || !zpl.hasSuffix("^XZ") {
-            return (false, "ZPL должен начинаться с ^XA и заканчиваться с ^XZ")
-        }
-        
-        return (true, "ZPL валиден")
+    private static func colorToZPL(_ color: Color) -> String {
+        // Конвертация цвета в ZPL формат (BGR)
+        let red = Int(color.red * 255)
+        let green = Int(color.green * 255)
+        let blue = Int(color.blue * 255)
+        return "\(red),\(green),\(blue)"
     }
 }
