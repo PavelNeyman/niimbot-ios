@@ -78,9 +78,34 @@ struct LabelEditorView: View {
                         .shadow(radius: 2)
                     }
                 }
+                
+                // Кнопка свойств этикетки
+                Button(action: {
+                    if let params = canvasState.labelParams {
+                        let sheet = NavigationView {
+                            LabelPropsEditor(params: .constant(params))
+                        }
+                        .navigationTitle("Свойства этикетки")
+                    }
+                }) {
+                    Image(systemName: "rectangle.and.paperclip")
+                        .font(.system(size: 18))
+                        .foregroundColor(.orange)
+                }
+                .disabled(canvasState.labelParams == nil)
+                .padding()
+                .background(Color(.systemGroupedBackground))
+                .cornerRadius(8)
+                .shadow(radius: 2)
             }
             .padding()
             .navigationTitle("Редактор этикеток")
+            .sheet(item: $canvasState.labelParams) { params in
+                NavigationView {
+                    LabelPropsEditor(params: .constant(params))
+                }
+                .navigationTitle("Свойства этикетки")
+            }
         }
     }
 }
