@@ -15,6 +15,10 @@ struct MainPageView: View {
                 .tabItem {
                     Label("Сохраненные", systemImage: "doc.text")
                 }
+            PrintPreviewView()
+                .tabItem {
+                    Label("Печать", systemImage: "print")
+                }
             SettingsView()
                 .tabItem {
                     Label("Настройки", systemImage: "gear")
@@ -27,4 +31,15 @@ struct MainPageView: View {
 
 #Preview {
     MainPageView()
+}
+
+struct PrintPreviewViewWrapper: View {
+    @StateObject private var printManager = PrintManager()
+    
+    var body: some View {
+        PrintPreviewView()
+            .onAppear {
+                // Инициализация параметров печати
+            }
+    }
 }
