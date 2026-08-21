@@ -964,7 +964,15 @@ Status:
 
 Status:
 
-**Phase 5 in progress** (Template Management)
+**Phase 8 complete** (User Fonts and Icons)
+
+**Phase 4 complete** (Label Editor)
+
+**Phase 3 complete** (Printer Connection)
+
+**Phase 2 complete** (Xcode Project Setup)
+
+**Phase 1 complete** (Repository Foundation)
 
 ---
 
@@ -979,6 +987,8 @@ Status:
 ## Implementation
 
 Status:
+
+**Phase 8 complete** (User Fonts and Icons)
 
 **Phase 4 complete** (Label Editor)
 
@@ -1086,14 +1096,15 @@ Changing the implementation order requires explicit approval.
 
 ## Phase 8 — User Fonts and Icons
 
-- [ ] UserFont model
-- [ ] UserIcon model
-- [ ] FontManager
-- [ ] Font loading
-- [ ] Font storage
-- [ ] Font picker UI
-- [ ] Icon storage
-- [ ] Icon picker UI
+- [x] UserFont model
+- [x] UserIcon model
+- [x] FontManager service
+- [x] Font loading and storage
+- [x] Font picker UI (FontPickerView, FontSelector)
+- [x] Icon storage
+- [x] Icon picker UI (IconPickerView, IconSelector)
+- [x] Integration into TextParamsControls
+- [x] Integration into LabelEditorView
 
 ---
 
