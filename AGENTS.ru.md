@@ -964,7 +964,7 @@ Process.swift
 
 Статус:
 
-**Phase 3 complete** (Printer Connection)
+**Phase 4 in progress** (Label Editor)
 
 ---
 
@@ -980,9 +980,11 @@ Process.swift
 
 Статус:
 
-**Phase 3 complete** (Printer Connection)
+**Phase 3 in progress** (Label Editor)
 
-**Phase 2 complete** (Xcode Project Setup)
+**Phase 2 complete** (Printer Connection)
+
+**Phase 1 complete** (Repository Foundation)
 
 ---
 
@@ -1037,14 +1039,14 @@ Process.swift
 
 ## Phase 4 — Label Editor (Native SwiftUI)
 
-- [ ] SwiftUI Canvas container
-- [ ] Object picker (text, QR, barcode, image, shape)
-- [ ] Text controls (font, size, color, alignment)
+- [x] SwiftUI Canvas container (LabelCanvasState, LabelCanvasView)
+- [x] Object picker (text, QR, barcode, image, shape)
+- [x] Text controls (font, size, color, alignment)
 - [ ] QR Code controls
 - [ ] Barcode controls
 - [ ] Image controls
 - [ ] Shape controls
-- [ ] Object actions (delete, clone, move)
+- [x] Object actions (delete, clone, move)
 - [ ] Label properties editor
 
 ---

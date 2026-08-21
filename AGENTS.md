@@ -964,7 +964,7 @@ Status:
 
 Status:
 
-**Phase 2 complete** (Xcode Project Setup)
+**Phase 3 in progress** (Label Editor)
 
 ---
 
@@ -972,7 +972,7 @@ Status:
 
 Status:
 
-**Complete** (AGENTS EN+RU full volume v1.0, README, Roadmap, LICENSE)
+**Current** (AGENTS EN+RU full volume v1.0, README, Roadmap)
 
 ---
 
@@ -980,7 +980,9 @@ Status:
 
 Status:
 
-**Phase 2 complete** (Xcode Project Setup)
+**Phase 3 in progress** (Label Editor)
+
+**Phase 2 complete** (Printer Connection)
 
 **Phase 1 complete** (Repository Foundation)
 
@@ -1037,14 +1039,14 @@ Changing the implementation order requires explicit approval.
 
 ## Phase 4 — Label Editor (Native SwiftUI)
 
-- [ ] SwiftUI Canvas container
-- [ ] Object picker (text, QR, barcode, image, shape)
-- [ ] Text controls (font, size, color, alignment)
+- [x] SwiftUI Canvas container (LabelCanvasState, LabelCanvasView)
+- [x] Object picker (text, QR, barcode, image, shape)
+- [x] Text controls (font, size, color, alignment)
 - [ ] QR Code controls
 - [ ] Barcode controls
 - [ ] Image controls
 - [ ] Shape controls
-- [ ] Object actions (delete, clone, move)
+- [x] Object actions (delete, clone, move)
 - [ ] Label properties editor
 
 ---

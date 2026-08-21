@@ -157,18 +157,18 @@ xcodebuild -scheme NiimBlueiOS -destination 'platform=iOS Simulator,name=iPhone 
 - ZPL generation for printing
 - Multiple object types support
 
-### Future Phases
+### In Progress
 
-**Phase 4 - Label Editor**
-- SwiftUI Canvas container
-- Object picker (text, QR, barcode, image, shape)
-- Text controls (font, size, color, alignment)
-- QR Code controls
-- Barcode controls
-- Image controls
-- Shape controls
-- Object actions (delete, clone, move)
-- Label properties editor
+**Phase 4 - Label Editor (Native SwiftUI)**
+- [x] SwiftUI Canvas container (LabelCanvasState, LabelCanvasView)
+- [x] Object picker (text, QR, barcode, image, shape)
+- [x] Text controls (font, size, color, alignment)
+- [ ] QR Code controls
+- [ ] Barcode controls
+- [ ] Image controls
+- [ ] Shape controls
+- [x] Object actions (delete, clone, move)
+- [ ] Label properties editor
 
 **Phase 5 - Template Management**
 - Save/Load labels
