@@ -986,6 +986,12 @@ Process.swift
 
 **Фаза 7 в процессе** (CSV Support)
 
+**Фаза 7 — CSV Support:**
+- Создана модель `CsvParams` в `NiimBlueiOS/Models/`
+- Создан сервис `CsvParser` в `NiimBlueiOS/Services/` с поддержкой парсинга CSV и интерполяции переменных
+- Создан `CsvImportView` в `NiimBlueiOS/Views/` для импорта CSV файлов
+- Добавлена вкладка "CSV" в `MainPageView`
+
 **Фаза 4 завершена** (Редактор этикеток)
 
 **Фаза 3 завершена** (Подключение принтера)
