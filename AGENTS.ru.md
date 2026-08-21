@@ -964,27 +964,29 @@ Process.swift
 
 Статус:
 
-**Phase 4 in progress** (Label Editor)
+**Фаза 5 в процессе** (Управление шаблонами)
 
 ---
 
-## Documentation
+## Документация
 
 Статус:
 
-**Current** (AGENTS EN+RU full volume v1.0, README, Roadmap)
+**Текущая** (AGENTS EN+RU full volume v1.0, README, Roadmap)
 
 ---
 
-## Implementation
+## Реализация
 
 Статус:
 
-**Phase 3 in progress** (Label Editor)
+**Фаза 4 завершена** (Редактор этикеток)
 
-**Phase 2 complete** (Printer Connection)
+**Фаза 3 завершена** (Подключение принтера)
 
-**Phase 1 complete** (Repository Foundation)
+**Фаза 2 завершена** (Подключение принтера)
+
+**Фаза 1 завершена** (Фундамент репозитория)
 
 ---
 
