@@ -1042,12 +1042,12 @@ Process.swift
 - [x] SwiftUI Canvas container (LabelCanvasState, LabelCanvasView)
 - [x] Object picker (text, QR, barcode, image, shape)
 - [x] Text controls (font, size, color, alignment)
-- [ ] QR Code controls
-- [ ] Barcode controls
-- [ ] Image controls
-- [ ] Shape controls
+- [x] QR Code controls
+- [x] Barcode controls
+- [x] Image controls
+- [x] Shape controls
 - [x] Object actions (delete, clone, move)
-- [ ] Label properties editor
+- [x] Label properties editor
 
 ---
 
