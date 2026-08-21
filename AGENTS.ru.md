@@ -964,7 +964,15 @@ Process.swift
 
 Статус:
 
-**Фаза 6 в процессе** (Просмотр печати)
+**Фаза 8 завершена** (Пользовательские шрифты и иконки)
+
+**Фаза 4 завершена** (Редактор этикеток)
+
+**Фаза 3 завершена** (Подключение принтера)
+
+**Фаза 2 завершена** (Настройка проекта Xcode)
+
+**Фаза 1 завершена** (Фундамент репозитория)
 
 ---
 
@@ -980,13 +988,7 @@ Process.swift
 
 Статус:
 
-**Фаза 5 завершена** (Управление шаблонами)
-
-**Фаза 6 завершена** (Просмотр печати)
-
-**Фаза 7 завершена** (CSV Support - базовая функциональность)
-
-**Фаза 8 в процессе** (User Fonts and Icons)
+**Фаза 8 завершена** (Пользовательские шрифты и иконки)
 
 **Фаза 4 завершена** (Редактор этикеток)
 
@@ -1092,16 +1094,17 @@ Process.swift
 
 ---
 
-## Phase 8 — User Fonts and Icons
+## Phase 8 — Пользовательские шрифты и иконки
 
-- [ ] UserFont model
-- [ ] UserIcon model
-- [ ] FontManager
-- [ ] Font loading
-- [ ] Font storage
-- [ ] Font picker UI
-- [ ] Icon storage
-- [ ] Icon picker UI
+- [x] UserFont model (модель пользовательских шрифтов)
+- [x] UserIcon model (модель пользовательских иконок)
+- [x] FontManager service (сервис управления шрифтами)
+- [x] Font loading и storage (загрузка и хранение шрифтов)
+- [x] Font picker UI (FontPickerView, FontSelector)
+- [x] Icon storage (хранение иконок)
+- [x] Icon picker UI (IconPickerView, IconSelector)
+- [x] Integration into TextParamsControls (интеграция в редактор текста)
+- [x] Integration into LabelEditorView (интеграция в главный редактор этикеток)
 
 ---
 
