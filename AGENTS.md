@@ -964,7 +964,7 @@ Status:
 
 Status:
 
-**Phase 3 in progress** (Label Editor)
+**Phase 5 in progress** (Template Management)
 
 ---
 
@@ -980,9 +980,11 @@ Status:
 
 Status:
 
-**Phase 3 in progress** (Label Editor)
+**Phase 4 complete** (Label Editor)
 
-**Phase 2 complete** (Printer Connection)
+**Phase 3 complete** (Printer Connection)
+
+**Phase 2 complete** (Xcode Project Setup)
 
 **Phase 1 complete** (Repository Foundation)
 
@@ -1053,11 +1055,11 @@ Changing the implementation order requires explicit approval.
 
 ## Phase 5 — Template Management
 
-- [ ] ExportedLabelTemplate model
-- [ ] LabelStorage service
-- [ ] Save label function
-- [ ] Load label function
-- [ ] SavedLabelsView
+- [x] ExportedLabelTemplate model
+- [x] LabelStorage service
+- [x] Save label function
+- [x] Load label function
+- [x] SavedLabelsView
 - [ ] Import label function
 
 ---

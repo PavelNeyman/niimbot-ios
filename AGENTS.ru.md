@@ -1055,11 +1055,11 @@ Process.swift
 
 ## Phase 5 — Template Management
 
-- [ ] ExportedLabelTemplate model
-- [ ] LabelStorage service
-- [ ] Save label function
-- [ ] Load label function
-- [ ] SavedLabelsView
+- [x] ExportedLabelTemplate model
+- [x] LabelStorage service
+- [x] Save label function
+- [x] Load label function
+- [x] SavedLabelsView
 - [ ] Import label function
 
 ---
