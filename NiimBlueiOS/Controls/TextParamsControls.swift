@@ -5,6 +5,25 @@ struct TextParamsControls: View {
     @Binding var params: TextParams
     @Binding var x: Double
     @Binding var y: Double
+    @ObservedObject var fontManager: FontManager
+    @ObservedObject var iconManager: IconManager
+    private let systemFonts: [String]
+    
+    init(
+        params: Binding<TextParams>,
+        x: Binding<Double>,
+        y: Binding<Double>,
+        fontManager: FontManager,
+        iconManager: IconManager,
+        systemFonts: [String] = []
+    ) {
+        _params = params
+        _x = x
+        _y = y
+        self.fontManager = fontManager
+        self.iconManager = iconManager
+        self.systemFonts = systemFonts
+    }
     
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
@@ -32,12 +51,12 @@ struct TextParamsControls: View {
             // Шрифт
             Text("Шрифт:")
                 .font(.caption)
-            Picker("Шрифт", selection: FontFamily.allCases) {
-                ForEach(FontFamily.allCases, id: \.self) { font in
-                    Text(font.rawValue).tag(font)
-                }
-            }
-            .pickerStyle(.menu)
+            FontSelector(
+                fontFamily: .constant(params.fontFamily),
+                fontManager: fontManager,
+                systemFonts: systemFonts,
+                customFonts: fontManager.customFonts
+            )
             .frame(width: 200)
             
             // Размер шрифта
@@ -115,9 +134,13 @@ extension Color {
 }
 
 #Preview {
+    let fontManager = FontManager()
+    let iconManager = IconManager()
     TextParamsControls(
         params: .constant(TextParams()),
         x: .constant(10),
-        y: .constant(10)
+        y: .constant(10),
+        fontManager: fontManager,
+        iconManager: iconManager
     )
 }

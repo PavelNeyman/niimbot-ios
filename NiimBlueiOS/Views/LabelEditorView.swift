@@ -4,6 +4,9 @@ import Foundation
 /// Основной редактор этикеток
 struct LabelEditorView: View {
     @StateObject private var canvasState = LabelCanvasState()
+    @StateObject private var fontManager = FontManager()
+    @StateObject private var iconManager = IconManager()
+    
     @State private var selectedObjectIndex: Int = -1
     @State private var selectedType: ObjectType = .text
     
@@ -14,6 +17,7 @@ struct LabelEditorView: View {
     @State private var textJustify: JustifyAlignment = .left
     @State private var textBold: Bool = false
     @State private var textItalic: Bool = false
+    @State private var textIcon: String = ""
     
     private let canvasWidth: Double = 100
     private let canvasHeight: Double = 50
@@ -55,29 +59,32 @@ struct LabelEditorView: View {
                 .cornerRadius(8)
                 .shadow(radius: 2)
                 
-                // Панель редактирования текста
-                if let object = canvasState.objects.first(where: { $0.type == .text }) {
-                    if let params = object.textParams {
-                        TextParamsControls(
-                            params: Binding(
-                                get: { params },
-                                set: { object.textParams = $0 }
-                            ),
-                            x: Binding(
-                                get: { object.x },
-                                set: { object.x = $0 }
-                            ),
-                            y: Binding(
-                                get: { object.y },
-                                set: { object.y = $0 }
-                            )
-                        )
-                        .padding()
-                        .background(Color(.systemGroupedBackground))
-                        .cornerRadius(8)
-                        .shadow(radius: 2)
-                    }
-                }
+                 // Панель редактирования текста
+                 if let object = canvasState.objects.first(where: { $0.type == .text }) {
+                     if let params = object.textParams {
+                         TextParamsControls(
+                             params: Binding(
+                                 get: { params },
+                                 set: { object.textParams = $0 }
+                             ),
+                             x: Binding(
+                                 get: { object.x },
+                                 set: { object.x = $0 }
+                             ),
+                             y: Binding(
+                                 get: { object.y },
+                                 set: { object.y = $0 }
+                             ),
+                             fontManager: fontManager,
+                             iconManager: iconManager,
+                             systemFonts: fontManager.systemFonts
+                         )
+                         .padding()
+                         .background(Color(.systemGroupedBackground))
+                         .cornerRadius(8)
+                         .shadow(radius: 2)
+                     }
+                 }
                 
                 // Кнопка свойств этикетки
                 Button(action: {
