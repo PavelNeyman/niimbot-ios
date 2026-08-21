@@ -5,6 +5,7 @@ struct SavedLabelsView: View {
     @State private var showSaveSheet = false
     @State private var newLabelName = ""
     @State private var selectedTemplate: ExportedLabelTemplate?
+    @State private var showCsvImport = false
     
     var body: some View {
         NavigationStack {
@@ -27,6 +28,13 @@ struct SavedLabelsView: View {
                         Image(systemName: "square.and.arrow.down")
                             .font(.title2)
                     }
+                    
+                    Button(action: {
+                        showCsvImport = true
+                    }) {
+                        Image(systemName: "doc.text.badge.plus")
+                            .font(.title2)
+                    }
                 }
             }
             .sheet(isPresented: $showSaveSheet) {
@@ -34,6 +42,28 @@ struct SavedLabelsView: View {
                     labelStorage: labelStorage,
                     name: $newLabelName
                 )
+            }
+            .sheet(isPresented: $showCsvImport) {
+                CsvImportView(
+                    onImport: { csvParams in
+                        print("CSV imported: \(csvParams.count) files")
+                    },
+                    onCancel: {
+                        print("CSV import cancelled")
+                    }
+                )
+            }
+            .fileImporter(
+                isPresented: $showCsvImport,
+                allowedContentTypes: [.csv],
+                allowsMultipleSelection: true
+            ) { result in
+                switch result {
+                case .success(let selectedFiles):
+                    print("Selected \(selectedFiles.count) CSV files")
+                case .failure(let error):
+                    print("CSV import failed: \(error.localizedDescription)")
+                }
             }
             .sheet(item: $selectedTemplate) { template in
                 LoadLabelSheet(template: template, labelStorage: labelStorage)

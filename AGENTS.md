@@ -1066,20 +1066,20 @@ Changing the implementation order requires explicit approval.
 
 ## Phase 6 — Print Preview
 
-- [ ] ZPLGenerator
-- [ ] ImagePostProcessor
-- [ ] PrintTask model
-- [ ] PrintPreviewView
-- [ ] Print parameters (quantity, density, speed)
-- [ ] Print execution
+- [x] ZPLGenerator
+- [x] ImagePostProcessor
+- [x] PrintTask model
+- [x] PrintPreviewView
+- [x] Print parameters (quantity, density, speed)
+- [x] Print execution
 
 ---
 
 ## Phase 7 — CSV Support
 
-- [ ] CsvParams model
-- [ ] CsvParser
-- [ ] Variable interpolation
+- [x] CsvParams model
+- [x] CsvParser
+- [x] Variable interpolation
 - [ ] Batch print support
 
 ---

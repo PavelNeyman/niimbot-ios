@@ -982,7 +982,9 @@ Process.swift
 
 **Фаза 5 завершена** (Управление шаблонами)
 
-**Фаза 6 в процессе** (Просмотр печати)
+**Фаза 6 завершена** (Просмотр печати)
+
+**Фаза 7 в процессе** (CSV Support)
 
 **Фаза 4 завершена** (Редактор этикеток)
 
@@ -1082,8 +1084,8 @@ Process.swift
 ## Phase 7 — CSV Support
 
 - [x] CsvParams model
-- [ ] CsvParser
-- [ ] Variable interpolation
+- [x] CsvParser
+- [x] Variable interpolation
 - [ ] Batch print support
 
 ---

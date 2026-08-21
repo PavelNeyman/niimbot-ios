@@ -19,6 +19,17 @@ struct MainPageView: View {
                 .tabItem {
                     Label("Печать", systemImage: "print")
                 }
+            CsvImportView(
+                onImport: { csvParams in
+                    print("CSV imported: \(csvParams.count) files")
+                },
+                onCancel: {
+                    print("CSV import cancelled")
+                }
+            )
+                .tabItem {
+                    Label("CSV", systemImage: "doc.text.badge.plus")
+                }
             SettingsView()
                 .tabItem {
                     Label("Настройки", systemImage: "gear")
