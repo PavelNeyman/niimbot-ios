@@ -964,7 +964,7 @@ Process.swift
 
 Статус:
 
-**Фаза 5 в процессе** (Управление шаблонами)
+**Фаза 6 в процессе** (Просмотр печати)
 
 ---
 
@@ -980,11 +980,15 @@ Process.swift
 
 Статус:
 
+**Фаза 5 завершена** (Управление шаблонами)
+
+**Фаза 6 в процессе** (Просмотр печати)
+
 **Фаза 4 завершена** (Редактор этикеток)
 
 **Фаза 3 завершена** (Подключение принтера)
 
-**Фаза 2 завершена** (Подключение принтера)
+**Фаза 2 завершена** (Настройка проекта Xcode)
 
 **Фаза 1 завершена** (Фундамент репозитория)
 
@@ -1066,18 +1070,18 @@ Process.swift
 
 ## Phase 6 — Print Preview
 
-- [ ] ZPLGenerator
-- [ ] ImagePostProcessor
-- [ ] PrintTask model
-- [ ] PrintPreviewView
-- [ ] Print parameters (quantity, density, speed)
-- [ ] Print execution
+- [x] ZPLGenerator
+- [x] ImagePostProcessor
+- [x] PrintTask model
+- [x] PrintPreviewView
+- [x] Print parameters (quantity, density, speed)
+- [x] Print execution
 
 ---
 
 ## Phase 7 — CSV Support
 
-- [ ] CsvParams model
+- [x] CsvParams model
 - [ ] CsvParser
 - [ ] Variable interpolation
 - [ ] Batch print support
