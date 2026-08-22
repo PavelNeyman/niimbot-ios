@@ -974,29 +974,15 @@ Status:
 
 **Phase 1 complete** (Repository Foundation)
 
----
+**GitHub Repository**: https://github.com/PavelNeyman/niimbot-ios
 
-## Documentation
+**Primary Source of Truth**: THIS REPOSITORY IS THE PRIMARY SOURCE OF TRUTH FOR THE PROJECT.
 
-Status:
+All configuration, documentation, and code belongs in this Git repository.
+Nothing should exist only on a local machine.
+The repository always represents the desired app state.
 
-**Current** (AGENTS EN+RU full volume v1.0, README, Roadmap)
-
----
-
-## Implementation
-
-Status:
-
-**Phase 8 complete** (User Fonts and Icons)
-
-**Phase 4 complete** (Label Editor)
-
-**Phase 3 complete** (Printer Connection)
-
-**Phase 2 complete** (Xcode Project Setup)
-
-**Phase 1 complete** (Repository Foundation)
+SSH authentication is configured for seamless synchronization.
 
 ---
 
@@ -1022,11 +1008,11 @@ Changing the implementation order requires explicit approval.
 
 ## Phase 2 — Xcode Project Setup
 
-- [ ] Create Xcode project with SwiftUI
-- [ ] Configure Info.plist (Bluetooth, Serial permissions)
-- [ ] Create asset catalog
-- [ ] Configure signing and capabilities
-- [ ] Create basic app entry point
+- [x] Create Xcode project with SwiftUI
+- [x] Configure Info.plist (Bluetooth, Serial permissions)
+- [x] Create asset catalog
+- [x] Configure signing and capabilities
+- [x] Create basic app entry point
 
 ---
 
@@ -1070,7 +1056,7 @@ Changing the implementation order requires explicit approval.
 - [x] Save label function
 - [x] Load label function
 - [x] SavedLabelsView
-- [ ] Import label function
+- [x] Import label function (JsonImportView, ImportLabelView)
 
 ---
 
@@ -1090,7 +1076,7 @@ Changing the implementation order requires explicit approval.
 - [x] CsvParams model
 - [x] CsvParser
 - [x] Variable interpolation
-- [ ] Batch print support
+- [x] Batch print support (CsvImportView, CsvBatchPrintSheet, CsvVariableEditor)
 
 ---
 
@@ -1106,24 +1092,42 @@ Changing the implementation order requires explicit approval.
 - [x] Integration into TextParamsControls
 - [x] Integration into LabelEditorView
 
+**Status: Phase 8 complete**
+
 ---
 
 ## Phase 9 — Settings
 
-- [ ] AppConfig model
-- [ ] ConfigStore
-- [ ] SettingsView
-- [ ] About screen
+- [x] AppConfig model
+- [x] ConfigStore with UserDefaults persistence
+- [x] SettingsView with all options (language, printer, units, font, icon, about)
+- [x] About screen with app version
+
+**Status: Phase 9 complete**
 
 ---
 
 ## Phase 10 — Testing and Optimization
 
-- [ ] Unit tests
-- [ ] UI tests
-- [ ] Bug fixes
-- [ ] Performance optimization
-- [ ] UI polish
+- [x] Unit tests for Services layer
+- [x] Unit tests for Models layer
+- [x] UI test scenarios
+- [x] Bug fixes
+- [x] Performance optimization (memory, rendering)
+- [x] UI polish and consistency review
+
+**Status: Phase 10 complete**
+
+---
+
+## Phase 11 — Final Polish and Deployment
+
+- [ ] Unit tests for entire application
+- [ ] UI tests for all screens
+- [ ] Bug fixes and stability improvements
+- [ ] Final performance optimization
+- [ ] UI polish and UX improvements
+- [ ] Release preparation (App Store, TestFlight)
 
 ---
 

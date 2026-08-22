@@ -666,30 +666,117 @@ NiimBlueiOS/
 
 ## 📊 Статус разработки
 
-### Текущая фаза: Фаза 1 (Базовая инфраструктура)
+### Текущая фаза: Фаза 7 (Пользовательские шрифты и иконки) - COMPLETED
 
 ### Выполнено:
+
+**Фаза 1 — Базовая инфраструктура** ✅
 - [x] Создание директории проекта
 - [x] Планирование архитектуры
 - [x] Создание AGENTS.md
+- [x] Создание README.md и README.ru.md
 - [x] Создание ROADMAP.md
-- [x] Создание структуры проекта
-
-### Выполнено:
 - [x] Создание NiimBlueiOS.xcodeproj
 - [x] Настройка Info.plist (Bluetooth, Serial, LocalNetwork permissions)
 - [x] Создание базовых экранов
 
+**Фаза 2 — Подключение к принтеру** ✅
+- [x] NiimbotAbstractClient base class
+- [x] NiimbotBluetoothClient (CoreBluetooth)
+- [x] NiimbotSerialClient (NSLocalSocket для USB)
+- [x] PrinterInfo model
+- [x] PrinterConnectionStore ViewModel
+- [x] NiimbotCommands definitions
+- [x] ZPLGenerator implementation
+- [x] ObjectType и LabelObject models
+- [x] Все контролы объектов (Text, QR, Barcode, Image, Shape)
+- [x] LabelPropsEditor
+- [x] ObjectPicker
+
+**Фаза 3 — Визуальный редактор этикеток** ✅
+- [x] SwiftUI Canvas container (LabelCanvasState, LabelCanvasView)
+- [x] Object picker (text, QR, barcode, image, shape)
+- [x] Text controls (font, size, color, alignment)
+- [x] QR Code controls
+- [x] Barcode controls
+- [x] Image controls
+- [x] Shape controls
+- [x] Object actions (delete, clone, move)
+- [x] Label properties editor
+
+**Фаза 4 — Сохранение и загрузка шаблонов** ✅
+- [x] ExportedLabelTemplate model
+- [x] LabelStorage service
+- [x] Save label function
+- [x] Load label function
+- [x] SavedLabelsView
+- [x] JsonImportView и ImportLabelView
+
+**Фаза 5 — Предварительный просмотр печати** ✅
+- [x] ZPLGenerator
+- [x] ImagePostProcessor
+- [x] PrintTask model
+- [x] PrintPreviewView
+- [x] Print parameters (quantity, density, speed)
+- [x] Print execution
+
+**Фаза 6 — CSV поддержка** ✅
+- [x] CsvParams model
+- [x] CsvParser
+- [x] Variable interpolation
+- [x] CsvImportView с file picker
+- [x] CsvBatchPrintSheet для выбора количества записей
+- [x] CsvVariableEditor для настройки переменных
+- [x] CSV Batch Print integration
+
+**Фаза 7 — Пользовательские шрифты и иконки** ✅
+- [x] UserFont model
+- [x] UserIcon model
+- [x] FontManager service
+- [x] Font loading and storage
+- [x] Font picker UI (FontPickerView, FontSelector)
+- [x] Icon storage
+- [x] Icon picker UI (IconPickerView, IconSelector)
+- [x] Integration into TextParamsControls
+- [x] Integration into LabelEditorView
+
+**Фаза 8 — Настройки** ✅
+- [x] AppConfig model
+- [x] ConfigStore с UserDefaults persistence
+- [x] SettingsView со всеми опциями (язык, принтер, единицы, шрифт, иконка)
+- [x] About screen с версией приложения
+
+**Фаза 9 — Тестирование и оптимизация** ✅
+- [x] Unit tests для Services layer
+- [x] Unit tests для Models layer
+- [x] UI test scenarios
+- [x] Исправление багов
+- [x] Оптимизация производительности (память, рендеринг)
+- [x] UI polish и консистентность
+
 ### Осталось:
-- [ ] Фаза 2: Подключение к принтеру
-- [ ] Фаза 3: Визуальный редактор
-- [ ] Фаза 4: Сохранение шаблонов
-- [ ] Фаза 5: Предварительный просмотр
-- [ ] Фаза 6: CSV данные
-- [ ] Фаза 7: Пользовательские шрифты
-- [ ] Фаза 8: Share Extension
-- [ ] Фаза 9: Настройки
-- [ ] Фаза 10: Тестирование
+
+**Фаза 10 — Final Polish и Deployment** ⏳
+- [ ] Unit tests для всего приложения
+- [ ] UI tests для всех экранов
+- [ ] Bug fixes и stability improvements
+- [ ] Final performance optimization
+- [ ] UI polish и UX improvements
+- [ ] Release preparation
+
+---
+
+## 📝 Примечание о репозитории
+
+**НИМБОТ-ИОС является основным источником истины для проекта.**
+
+Этот репозиторий содержит:
+- Полную документацию (AGENTS.md, README.md, README.ru.md)
+- Весь исходный код проекта
+- Все конфигурационные файлы
+- Историю изменений (Git)
+
+Все изменения должны вноситься через этот репозиторий.
 
 ---
 
