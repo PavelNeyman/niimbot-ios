@@ -1,140 +1,209 @@
-//
-//  CsvImportView.swift
-//  NiimBlueiOS
-//
-//  UI для импорта CSV файлов в редактор этикеток
-//
-
 import SwiftUI
-import UniformTypeIdentifiers
 
-/// Представление импорта CSV файлов
 struct CsvImportView: View {
-    @State private var selectedFile: FilePickerResult?
-    @State private var showPreview: Bool = false
-    @State private var csvParams: CsvParams?
-    @State private var errorMessage: String?
-    @State private var previewText: String = ""
-    @State private var selectedRows: [CsvParams] = []
+    @Environment(\.dismiss) private var dismiss
+    @ObservedObject var labelStorage: LabelStorage
     
-    let onImport: ([CsvParams]) -> Void
-    let onCancel: () -> Void
+    @State private var selectedFiles: [URL] = []
+    @State private var importStatus: ImportStatus = .idle
+    @State private var importMessage: String?
+    @State private var showBatchSheet = false
+    @State private var batchCount: Int = 1
+    @State private var showVariableEditor = false
+    
+    enum ImportStatus {
+        case idle
+        case selecting
+        case parsing
+        case success
+        case error
+    }
     
     var body: some View {
-        VStack(spacing: 20) {
-            // Заголовок
-            Text("Импорт CSV")
-                .font(.title2)
-                .fontWeight(.semibold)
-            
-            if selectedFile != nil {
-                // Индикатор загрузки
-                ProgressView()
-                    .scaleEffect(1.5)
-            }
-            
-            // Сообщение об ошибке
-            if let error = errorMessage {
-                Text(error)
-                    .foregroundColor(.red)
-                    .font(.caption)
-            }
-            
-            if showPreview && csvParams != nil {
-                // Предварительный просмотр
-                ScrollView {
-                    LazyVGrid(columns: [
-                        GridItem(.adaptive(minimum: 300))
-                    ], spacing: 10) {
-                        ForEach(csvParams!.rows.enumerated(), id: \.offset) { index, row in
-                            Text(row.joined(separator: "  "))
-                                .font(.caption)
-                                .lineLimit(1)
+        NavigationStack {
+            VStack(spacing: 20) {
+                Image(systemName: "doc.text")
+                    .font(.system(size: 60))
+                    .foregroundColor(.blue)
+                
+                Text("Импорт CSV")
+                    .font(.largeTitle)
+                    .fontWeight(.semibold)
+                
+                Text("Выберите CSV-файлы для импорта данных")
+                    .font(.subheadline)
+                    .foregroundColor(.secondary)
+                
+                                    if importStatus == .idle {
+                    HStack(spacing: 12) {
+                        Button(action: {
+                            importFiles()
+                        }) {
+                            Image(systemName: "plus.circle.fill")
+                                .font(.title)
+                                .foregroundColor(.blue)
+                            
+                            Text("Выбрать файл")
+                                .font(.headline)
+                        }
+                        .buttonStyle(.borderedProminent)
+                        
+                        Button(action: {
+                            dismiss()
+                        }) {
+                            Text("Отмена")
+                                .font(.headline)
+                        }
+                        .buttonStyle(.bordered)
+                    }
+                } else if importStatus == .success {
+                    VStack(spacing: 16) {
+                        Image(systemName: "checkmark.circle.fill")
+                            .font(.system(size: 60))
+                            .foregroundColor(.green)
+                        
+                        Text("Импорт успешен!")
+                            .font(.headline)
+                        
+                        if let template = loadedTemplate {
+                            Text(template.name)
+                                .font(.subheadline)
+                                .foregroundColor(.secondary)
                         }
                     }
+                } else if let error = importMessage {
+                    VStack(spacing: 16) {
+                        Image(systemName: "xmark.circle.fill")
+                            .font(.system(size: 60))
+                            .foregroundColor(.red)
+                        
+                        Text("Ошибка импорта")
+                            .font(.headline)
+                        
+                        Text(error)
+                            .font(.subheadline)
+                            .foregroundColor(.secondary)
+                    }
                 }
-                .frame(maxHeight: 400)
-            }
-            
-            // Кнопки действий
-            VStack(spacing: 10) {
-                Button(action: {
-                    onImport(selectedRows)
-                }) {
-                    Text("Импортировать")
-                        .fontWeight(.semibold)
-                        .foregroundColor(.white)
-                        .frame(maxWidth: .infinity)
-                        .padding()
-                        .background(Color.blue)
-                        .cornerRadius(8)
-                }
-                .disabled(selectedRows.isEmpty)
                 
-                Button(action: {
-                    onCancel()
-                }) {
-                    Text("Отмена")
-                        .fontWeight(.semibold)
-                        .foregroundColor(.white)
-                        .frame(maxWidth: .infinity)
-                        .padding()
-                        .background(Color.gray)
-                        .cornerRadius(8)
+                if importStatus == .success {
+                    HStack(spacing: 16) {
+                        Button(action: {
+                            showBatchSheet = true
+                        }) {
+                            Image(systemName: "rectangle.on.rectangle")
+                                .font(.title)
+                                .foregroundColor(.blue)
+                            
+                            Text("Batch Print")
+                                .font(.headline)
+                        }
+                        .buttonStyle(.borderedProminent)
+                        
+                        Button(action: {
+                            dismiss()
+                        }) {
+                            Text("Закрыть")
+                                .font(.headline)
+                        }
+                        .buttonStyle(.bordered)
+                    }
                 }
             }
-        }
-        .padding()
-        .onAppear {
-            if let file = selectedFile {
-                importCSV(file: file)
+            .padding()
+            .navigationTitle("Импорт CSV")
+            .sheet(isPresented: $showBatchSheet) {
+                CsvBatchPrintSheet(
+                    count: $batchCount,
+                    onPrint: { csvParams in
+                        print("Batch print: \(csvParams.batchCount) records")
+                    },
+                    onCancel: {
+                        print("Batch print cancelled")
+                    }
+                )
+            }
+            .sheet(isPresented: $showVariableEditor) {
+                CsvVariableEditor(
+                    onDismiss: {
+                        showVariableEditor = false
+                    }
+                )
             }
         }
     }
     
-    /// Импортирует CSV файл
-    private func importCSV(file: FilePickerResult) {
-        guard let data = file.data else {
-            errorMessage = "Не удалось прочитать файл"
+    private func showFilePicker() {
+        selectedFiles = []
+        importStatus = .selecting
+        importMessage = nil
+        loadedTemplate = nil
+        
+        dismiss()
+    }
+    
+    private func importFiles() {
+        guard !selectedFiles.isEmpty else {
             return
         }
         
-        // Парсинг CSV
-        let result = CsvParser.parse(data: data)
+        importStatus = .parsing
+        importMessage = nil
         
-        if result.success {
-            selectedRows.append(result.params!)
-            errorMessage = nil
-            
-            // Показать превью
-            showPreview = true
-            
-            // Отобразить заголовки
-            previewText = result.params!.headers.joined(separator: "  ")
-        } else {
-            errorMessage = result.error
+        for url in selectedFiles {
+            let filePath = url.path
+            if let result = CsvParser.parse(filePath: filePath) {
+                if result.success {
+                    if let params = result.params {
+                        importStatus = .success
+                        importMessage = nil
+                        
+                        // Создаем LabelTemplate из CSV данных
+                        let template = labelStorage.saveLabel(
+                            name: params.fileName,
+                            objects: [], // Здесь должна быть логика создания объектов из CSV
+                            labelParams: LabelParams()
+                        )
+                        
+                        if let template = template {
+                            loadedTemplate = template
+                        }
+                    }
+                } else {
+                    importStatus = .error
+                    importMessage = result.error
+                }
+            }
         }
     }
 }
 
-/// Результат выбора файла
-struct FilePickerResult {
-    let url: URL
-    let name: String
-    let data: Data?
-    let type: UTType?
+// MARK: - Extension
+extension CsvImportView {
+    private var currentStatus: ImportStatus {
+        importStatus
+    }
+    
+    private var loadedTemplate: ExportedLabelTemplate? {
+        if importStatus == .success {
+            return importedTemplate
+        } else {
+            return nil
+        }
+    }
+    
+    private var importedTemplate: ExportedLabelTemplate? {
+        if !selectedFiles.isEmpty {
+            // Здесь должна быть реализация импорта из CSV
+            return nil // Заглушка
+        } else {
+            return nil
+        }
+    }
 }
 
 #Preview {
-    NavigationStack {
-        CsvImportView(
-            onImport: { rows in
-                print("Imported \(rows.count) CSV files")
-            },
-            onCancel: {
-                print("Import cancelled")
-            }
-        )
-        .navigationTitle("Импорт CSV")
-    }
+    CsvImportView(
+        labelStorage: LabelStorage()
+    )
 }

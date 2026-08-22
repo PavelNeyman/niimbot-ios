@@ -23,6 +23,31 @@ struct CsvParams: Codable, Identifiable {
     /// Данные CSV (массив массивов строк)
     var rows: [[String]] = []
     
+    /// Режим печати (single/batch)
+    var printMode: PrintMode = .single
+    
+    /// Количество записей для печати в batch mode
+    var batchCount: Int = 1
+    
+    /// Переменные для подстановки
+    var variables: [String: String] = [:]
+    
+    enum PrintMode: String, Codable {
+        case single = "single"
+        case batch = "batch"
+    }
+    
+    /// Количество колонок
+    var columnCount: Int {
+        guard !rows.isEmpty else { return 0 }
+        return rows[0].count
+    }
+    
+    /// Количество строк данных
+    var rowCount: Int {
+        return rows.count
+    }
+    
     /// Количество колонок
     var columnCount: Int {
         guard !rows.isEmpty else { return 0 }
@@ -48,6 +73,22 @@ struct CsvParams: Codable, Identifiable {
             return []
         }
         return rows[row]
+    }
+    
+    /// Получить строку по индексу
+    func getRowAt(_ index: Int) -> [String]? {
+        guard index < rows.count else {
+            return nil
+        }
+        return rows[index]
+    }
+    
+    /// Получить данные для конкретной строки
+    func getDataForRow(_ row: Int) -> [String]? {
+        guard let rowData = getRow(row: row) else {
+            return nil
+        }
+        return rowData
     }
 }
 

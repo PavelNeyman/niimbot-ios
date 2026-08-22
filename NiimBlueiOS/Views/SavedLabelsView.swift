@@ -6,8 +6,26 @@ struct SavedLabelsView: View {
     @State private var newLabelName = ""
     @State private var selectedTemplate: ExportedLabelTemplate?
     @State private var showCsvImport = false
+    @State private var showImportLabel = false
+    @State private var currentCsvParams: CsvParams?
     @State private var showJsonImport = false
     @State private var showImportLabel = false
+    
+    func importCsvFiles(files: [URL]) {
+        for file in files {
+            let filePath = file.path
+            if let result = CsvParser.parse(filePath: filePath) {
+                if result.success {
+                    if let params = result.params {
+                        currentCsvParams = params
+                        print("CSV imported: \(params.rowCount) rows, \(params.columnCount) columns")
+                    }
+                } else {
+                    print("CSV parse error: \(result.error ?? "Unknown error")")
+                }
+            }
+        }
+    }
     
     var body: some View {
         NavigationStack {
@@ -70,6 +88,7 @@ struct SavedLabelsView: View {
                 switch result {
                 case .success(let selectedFiles):
                     print("Selected \(selectedFiles.count) CSV files")
+                    importCsvFiles(files: selectedFiles)
                 case .failure(let error):
                     print("CSV import failed: \(error.localizedDescription)")
                 }
