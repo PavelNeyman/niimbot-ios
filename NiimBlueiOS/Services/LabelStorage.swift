@@ -50,6 +50,44 @@ final class LabelStorage: ObservableObject {
         try jsonData.write(to: url, options: .atomicWrite)
     }
     
+    /// Импорт этикетки из JSON файла
+    func importLabel(from url: URL) -> ExportedLabelTemplate? {
+        do {
+            // Проверка существования файла
+            guard FileManager.default.fileExists(atPath: url.path) else {
+                print("File does not exist: \(url.path)")
+                return nil
+            }
+            
+            let decoder = JSONDecoder()
+            let jsonData = try Data(contentsOf: url)
+            
+            let template = try decoder.decode(ExportedLabelTemplate.self, from: jsonData)
+            
+            // Проверка объектов
+            if template.objects.isEmpty {
+                print("Warning: Imported label has no objects")
+            }
+            
+            // Сохраняем импорт в локальный список
+            if let index = savedLabels.firstIndex(where: { $0.id == template.id }) {
+                savedLabels[index] = template
+            } else {
+                savedLabels.append(template)
+                savedLabels.sort { $0.createdAt > $1.createdAt }
+            }
+            
+            // Обновляем список
+            loadAllLabels()
+            
+            return template
+            
+        } catch {
+            print("Error importing label: \(error.localizedDescription)")
+            return nil
+        }
+    }
+    
     // MARK: - Load Label
     
     /// Загрузить этикетку по имени

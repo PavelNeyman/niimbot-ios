@@ -11,6 +11,7 @@ import SwiftUI
 struct IconSelector: View {
     @Binding var iconName: String
     @ObservedObject var iconManager: IconManager
+    @Binding var onIconChanged: ((String) -> Void)?
     
     private let systemIcons: [String]
     private let customIcons: [UserIcon]
@@ -19,12 +20,14 @@ struct IconSelector: View {
         iconName: Binding<String>,
         iconManager: IconManager,
         systemIcons: [String] = [],
-        customIcons: [UserIcon] = []
+        customIcons: [UserIcon] = [],
+        onIconChanged: ((String) -> Void)? = nil
     ) {
         _iconName = iconName
         self.iconManager = iconManager
         self.systemIcons = systemIcons
         self.customIcons = customIcons
+        self.onIconChanged = onIconChanged
     }
     
     var body: some View {
@@ -49,16 +52,8 @@ struct IconSelector: View {
     
     /// Handle icon change
     private func handleIconChange(_ icon: String) {
-        // Update text object properties with new icon
-        // This is typically called from LabelCanvasView
-        // Implementation depends on the calling context
-        
-        // For now, just log the change
-        print("Icon changed to: \(icon)")
-        
-        // If we need to update state, this would be where it happens
-        // In a real implementation, this would update the LabelCanvasState
-        // or call a method on the label editor
+        // Call callback to update the calling view
+        onIconChanged?(icon)
     }
     
     /// Get available icons

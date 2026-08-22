@@ -10,11 +10,34 @@ import SwiftUI
 /// View for selecting icons - displays both system and custom icons
 struct IconPickerView: View {
     @Binding var selectedIcon: String
-    @ObservedObject var iconManager: IconManager
+    @StateObject var iconManager = IconManager()
     @Environment(\.dismiss) private var dismiss
+    
+    @State private var systemIcons: [String] = []
+    @State private var customIcons: [UserIcon] = []
+    
+    // Load system and custom icons
+    init(selectedIcon: Binding<String>) {
+        _selectedIcon = selectedIcon
+    }
     
     var body: some View {
         NavigationView {
+            // Load icons
+            .task {
+                do {
+                    try await iconManager.loadSystemIcons()
+                } catch {
+                    print("Failed to load system icons: \(error)")
+                }
+                
+                do {
+                    try await iconManager.loadCustomIconsAsync()
+                } catch {
+                    print("Failed to load custom icons: \(error)")
+                }
+            }
+            
             VStack(spacing: 16) {
                 // Header
                 Text("Выберите иконку")
@@ -147,12 +170,12 @@ struct IconPickerView: View {
     
     /// System icons section
     private var systemIconsSection: [String] {
-        return systemIcons
+        return iconManager.systemIcons
     }
     
     /// Custom icons section
     private var customIconsSection: [UserIcon] {
-        return customIcons
+        return iconManager.customIcons
     }
 }
 

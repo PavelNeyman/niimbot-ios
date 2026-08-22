@@ -7,6 +7,7 @@
 
 import Foundation
 import CoreGraphics
+import UIKit
 
 /// Error type for icon manager operations
 enum IconManagerError: Error, LocalizedError {
@@ -76,29 +77,30 @@ class IconManager: ObservableObject {
     
     // MARK: - System Icons
     
-    /// Load available system icons (placeholders)
+    /// Load available system icons (SF Symbols)
     func loadSystemIcons() async throws {
         error = nil
         self.systemIcons = []
         
-        // Use CFAvailableIcons for system icons
-        guard let icons = CFAvailableIcons() else {
-            return
+        do {
+            // SF Symbols через SFIntrinsicSymbolConfiguration
+            let availableSymbols = SFIntrinsicSymbolConfiguration.generateSymbols(
+                size: 16,
+                availableSizeClasses: [
+                    .regular, .pad, .phonepad, .macpad, .phone, .mac
+                ]
+            )
+            
+            let fontNames = availableSymbols.map { $0.fontName }
+            self.systemIcons = fontNames
+            
+            self.systemIcons.sort { $0 < $1 }
+            
+            print("Loaded \(systemIcons.count) system icons")
+        } catch {
+            self.error = .iconLoadFailed
+            print("Failed to load system icons: \(error)")
         }
-        
-        // Filter to commonly used icons
-        for icon in icons {
-            let iconName = icon.iconName
-            // Common iOS system icons
-            if !systemIcons.contains(iconName) {
-                systemIcons.append(iconName)
-            }
-        }
-        
-        // Sort alphabetically
-        self.systemIcons.sort { $0 < $1 }
-        
-        print("Loaded \(systemIcons.count) system icons")
     }
     
     // MARK: - Custom Icons Management

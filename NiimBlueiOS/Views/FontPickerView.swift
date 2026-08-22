@@ -10,11 +10,34 @@ import SwiftUI
 /// View for selecting fonts - displays both system and custom fonts
 struct FontPickerView: View {
     @Binding var selectedFont: String
-    @ObservedObject var fontManager: FontManager
+    @StateObject var fontManager = FontManager()
     @Environment(\.dismiss) private var dismiss
+    
+    @State private var systemFonts: [String] = []
+    @State private var customFonts: [UserFont] = []
+    
+    // Load system and custom fonts
+    init(selectedFont: Binding<String>) {
+        _selectedFont = selectedFont
+    }
     
     var body: some View {
         NavigationView {
+            // Load fonts
+            .task {
+                do {
+                    try await fontManager.loadSystemFonts()
+                } catch {
+                    print("Failed to load system fonts: \(error)")
+                }
+                
+                do {
+                    try await fontManager.loadCustomFontsAsync()
+                } catch {
+                    print("Failed to load custom fonts: \(error)")
+                }
+            }
+            
             VStack(spacing: 16) {
                 // Header
                 Text("Выберите шрифт")
@@ -147,12 +170,12 @@ struct FontPickerView: View {
     
     /// System fonts section
     private var systemFontsSection: [String] {
-        return systemFonts
+        return fontManager.systemFonts
     }
     
     /// Custom fonts section
     private var customFontsSection: [UserFont] {
-        return customFonts
+        return fontManager.customFonts
     }
 }
 

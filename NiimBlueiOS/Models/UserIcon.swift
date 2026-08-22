@@ -12,7 +12,7 @@ import CoreGraphics
 struct UserIcon: Codable, Identifiable, Hashable {
     let id: UUID
     let name: String
-    let data: Data
+    let path: URL
     let size: CGSize
     let format: String
     let createdAt: Date
@@ -22,14 +22,8 @@ struct UserIcon: Codable, Identifiable, Hashable {
     var isValidExtension: Bool {
         let validExtensions = ["png", "jpg", "jpeg", "gif", "bmp"]
         return validExtensions.contains { ext in
-            data.count > 0 && pathDescription.lastPathComponent.hasSuffix(ext)
+            path.lastPathComponent.hasSuffix(ext)
         }
-    }
-    
-    var pathDescription: String {
-        // Extract file extension from data filename if available
-        // This is a placeholder - actual path handling will be in IconManager
-        return "user_icon"
     }
     
     /// Human-readable description
@@ -40,7 +34,7 @@ struct UserIcon: Codable, Identifiable, Hashable {
     enum CodingKeys: CodingKey {
         case id
         case name
-        case data
+        case path
         case size
         case format
         case createdAt
@@ -50,7 +44,7 @@ struct UserIcon: Codable, Identifiable, Hashable {
     init(
         id: UUID = UUID(),
         name: String,
-        data: Data,
+        path: URL,
         size: CGSize,
         format: String,
         createdAt: Date = Date(),
@@ -58,7 +52,7 @@ struct UserIcon: Codable, Identifiable, Hashable {
     ) {
         self.id = id
         self.name = name
-        self.data = data
+        self.path = path
         self.size = size
         self.format = format
         self.createdAt = createdAt
@@ -70,7 +64,7 @@ struct UserIcon: Codable, Identifiable, Hashable {
         
         self.id = try container.decode(UUID.self, forKey: .id)
         self.name = try container.decode(String.self, forKey: .name)
-        self.data = try container.decode(Data.self, forKey: .data)
+        self.path = try container.decode(URL.self, forKey: .path)
         self.size = try container.decode(CGSize.self, forKey: .size)
         self.format = try container.decode(String.self, forKey: .format)
         self.createdAt = try container.decode(Date.self, forKey: .createdAt)
@@ -82,7 +76,7 @@ struct UserIcon: Codable, Identifiable, Hashable {
         
         try container.encode(id, forKey: .id)
         try container.encode(name, forKey: .name)
-        try container.encode(data, forKey: .data)
+        try container.encode(path, forKey: .path)
         try container.encode(size, forKey: .size)
         try container.encode(format, forKey: .format)
         try container.encode(createdAt, forKey: .createdAt)

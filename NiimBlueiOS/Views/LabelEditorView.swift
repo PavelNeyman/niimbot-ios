@@ -19,11 +19,50 @@ struct LabelEditorView: View {
     @State private var textItalic: Bool = false
     @State private var textIcon: String = ""
     
+    @State private var systemFontsLoaded = false
+    @State private var systemIconsLoaded = false
+    
     private let canvasWidth: Double = 100
     private let canvasHeight: Double = 50
     
     var body: some View {
         NavigationView {
+            VStack {
+                // Загрузка системных шрифтов и иконок
+                .task {
+                    // Загрузить системные шрифты
+                    do {
+                        try await fontManager.loadSystemFonts()
+                    } catch {
+                        print("Failed to load system fonts: \(error)")
+                    }
+                    
+                    // Загрузить системные иконки
+                    do {
+                        try await iconManager.loadSystemIcons()
+                    } catch {
+                        print("Failed to load system icons: \(error)")
+                    }
+                    
+                    // Загрузить кастомные шрифты
+                    do {
+                        try await fontManager.loadCustomFontsAsync()
+                    } catch {
+                        print("Failed to load custom fonts: \(error)")
+                    }
+                    
+                    // Загрузить кастомные иконки
+                    do {
+                        try await iconManager.loadCustomIconsAsync()
+                    } catch {
+                        print("Failed to load custom icons: \(error)")
+                    }
+                    
+                    systemFontsLoaded = true
+                    systemIconsLoaded = true
+                }
+            }
+            // Canvas для отображения объектов
             VStack {
                 // Canvas для отображения объектов
                 LabelCanvasView(

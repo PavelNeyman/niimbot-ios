@@ -7,6 +7,8 @@ struct TextParamsControls: View {
     @Binding var y: Double
     @ObservedObject var fontManager: FontManager
     @ObservedObject var iconManager: IconManager
+    @Binding var onFontChanged: ((String) -> Void)?
+    @Binding var onIconChanged: ((String) -> Void)?
     private let systemFonts: [String]
     
     init(
@@ -15,7 +17,9 @@ struct TextParamsControls: View {
         y: Binding<Double>,
         fontManager: FontManager,
         iconManager: IconManager,
-        systemFonts: [String] = []
+        systemFonts: [String] = [],
+        onFontChanged: ((String) -> Void)? = nil,
+        onIconChanged: ((String) -> Void)? = nil
     ) {
         _params = params
         _x = x
@@ -23,6 +27,8 @@ struct TextParamsControls: View {
         self.fontManager = fontManager
         self.iconManager = iconManager
         self.systemFonts = systemFonts
+        self.onFontChanged = onFontChanged
+        self.onIconChanged = onIconChanged
     }
     
     var body: some View {
@@ -55,7 +61,10 @@ struct TextParamsControls: View {
                 fontFamily: .constant(params.fontFamily),
                 fontManager: fontManager,
                 systemFonts: systemFonts,
-                customFonts: fontManager.customFonts
+                customFonts: fontManager.customFonts,
+                onFontChanged: { font in
+                    params.fontFamily = font
+                }
             )
             .frame(width: 200)
             
@@ -100,6 +109,20 @@ struct TextParamsControls: View {
                 Toggle("Жирный", isOn: $params.bold)
                 Toggle("Курсив", isOn: $params.italic)
             }
+            
+            // Иконка
+            Text("Иконка:")
+                .font(.caption)
+            IconSelector(
+                iconName: .constant(params.icon),
+                iconManager: iconManager,
+                systemIcons: iconManager.systemIcons,
+                customIcons: iconManager.customIcons,
+                onIconChanged: { iconName in
+                    params.icon = iconName
+                }
+            )
+            .frame(width: 200)
         }
         .frame(width: 280)
     }

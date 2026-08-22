@@ -81,25 +81,20 @@ class FontManager: ObservableObject {
         error = nil
         self.systemFonts = []
         
-        // Use CFAvailableFonts to get system fonts
-        guard let fonts = CFAvailableFonts() else {
-            return
+        do {
+            // iOS 15+: UIFont.fontNames()
+            let fonts = UIFont.fontNames() ?? []
+            self.systemFonts = fonts
+            
+            // Sort alphabetically
+            self.systemFonts.sort { $0 < $1 }
+            
+            // Print debug info for development
+            print("Loaded \(systemFonts.count) system fonts")
+        } catch {
+            self.error = .fontLoadFailed
+            print("Failed to load system fonts: \(error)")
         }
-        
-        // Filter to commonly used fonts
-        for font in fonts {
-            let fontName = font.fontName
-            // Common iOS system fonts
-            if !systemFonts.contains(fontName) {
-                systemFonts.append(fontName)
-            }
-        }
-        
-        // Sort alphabetically
-        self.systemFonts.sort { $0 < $1 }
-        
-        // Print debug info for development
-        print("Loaded \(systemFonts.count) system fonts")
     }
     
     // MARK: - Custom Fonts Management

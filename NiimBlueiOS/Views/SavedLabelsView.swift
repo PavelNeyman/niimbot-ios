@@ -6,6 +6,8 @@ struct SavedLabelsView: View {
     @State private var newLabelName = ""
     @State private var selectedTemplate: ExportedLabelTemplate?
     @State private var showCsvImport = false
+    @State private var showJsonImport = false
+    @State private var showImportLabel = false
     
     var body: some View {
         NavigationStack {
@@ -33,6 +35,13 @@ struct SavedLabelsView: View {
                         showCsvImport = true
                     }) {
                         Image(systemName: "doc.text.badge.plus")
+                            .font(.title2)
+                    }
+                    
+                    Button(action: {
+                        showImportLabel = true
+                    }) {
+                        Image(systemName: "doc.badge.json")
                             .font(.title2)
                     }
                 }
@@ -63,6 +72,25 @@ struct SavedLabelsView: View {
                     print("Selected \(selectedFiles.count) CSV files")
                 case .failure(let error):
                     print("CSV import failed: \(error.localizedDescription)")
+                }
+            }
+            .sheet(isPresented: $showImportLabel) {
+                ImportLabelView(
+                    labelStorage: labelStorage
+                )
+            }
+            .fileImporter(
+                isPresented: $showImportLabel,
+                allowedContentTypes: [.json],
+                allowsMultipleSelection: true
+            ) { result in
+                switch result {
+                case .success(let selectedFiles):
+                    if !selectedFiles.isEmpty {
+                        showImportLabel = true
+                    }
+                case .failure(let error):
+                    print("JSON import failed: \(error.localizedDescription)")
                 }
             }
             .sheet(item: $selectedTemplate) { template in

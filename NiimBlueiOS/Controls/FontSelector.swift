@@ -11,6 +11,7 @@ import SwiftUI
 struct FontSelector: View {
     @Binding var fontFamily: String
     @ObservedObject var fontManager: FontManager
+    @Binding var onFontChanged: ((String) -> Void)?
     
     private let systemFonts: [String]
     private let customFonts: [UserFont]
@@ -19,12 +20,14 @@ struct FontSelector: View {
         fontFamily: Binding<String>,
         fontManager: FontManager,
         systemFonts: [String] = [],
-        customFonts: [UserFont] = []
+        customFonts: [UserFont] = [],
+        onFontChanged: ((String) -> Void)? = nil
     ) {
         _fontFamily = fontFamily
         self.fontManager = fontManager
         self.systemFonts = systemFonts
         self.customFonts = customFonts
+        self.onFontChanged = onFontChanged
     }
     
     var body: some View {
@@ -49,16 +52,8 @@ struct FontSelector: View {
     
     /// Handle font change
     private func handleFontChange(_ font: String) {
-        // Update text object properties with new font family
-        // This is typically called from LabelCanvasView
-        // Implementation depends on the calling context
-        
-        // For now, just log the change
-        print("Font changed to: \(font)")
-        
-        // If we need to update state, this would be where it happens
-        // In a real implementation, this would update the LabelCanvasState
-        // or call a method on the label editor
+        // Call callback to update the calling view
+        onFontChanged?(font)
     }
     
     /// Get available fonts
