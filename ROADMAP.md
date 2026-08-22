@@ -469,19 +469,25 @@ NiimBlueiOS/
 - [x] FontManager service
 - [x] Font loading and storage
 - [x] Font picker UI
+- [x] Icon picker UI
 - [x] Integration into TextParamsControls
+- [x] Integration into LabelEditorView
 
 #### Результат
 - Загрузка пользовательских шрифтов
 - Выбор шрифтов в редакторе
-- Хранение шрифтов в приложении
+- Выбор иконок в редакторе
+- Хранение шрифтов и иконок в приложении
 
 #### Файлы созданы
 - Models/UserFont.swift
 - Models/UserIcon.swift
 - Services/FontManager.swift
+- Services/IconManager.swift
 - Controls/FontSelector.swift
+- Controls/IconSelector.swift
 - Views/FontPickerView.swift
+- Views/IconPickerView.swift
 
 ---
 
