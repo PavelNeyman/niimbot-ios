@@ -18,13 +18,13 @@
 ## Шаг 3: Проверка и коммит
 
 - [x] Убедиться, что AppDelegate.swift существует в NiimBlueiOS/Application/
-- [~] Закоммитьть изменения с сообщением о восстановлении структуры
-- [ ] Запушить изменения на origin/master
+- [x] Закоммитьть изменения с сообщением о восстановлении структуры
+- [x] Запушить изменения на origin/master
 
 ## Шаг 4: Валидация сборки
 
-- [ ] Выполнить xcodebuild -scheme NiimBlueiOS -sdk iphonesimulator -configuration Debug build
-- [ ] Проверить успешное завершение сборки
+- [~] Выполнить xcodebuild -scheme NiimBlueiOS -sdk iphonesimulator -configuration Debug build
+- [~] Проверить успешное завершение сборки
 
 ## Шаг 5: Настройка тестов
 
