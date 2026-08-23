@@ -1070,7 +1070,7 @@ Process.swift
 - [x] Save label function
 - [x] Load label function
 - [x] SavedLabelsView
-- [ ] Import label function
+- [x] Import label function
 
 ---
 
