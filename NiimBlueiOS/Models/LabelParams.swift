@@ -91,13 +91,13 @@ struct TextParams {
 struct QRCodeParams {
     var data: String
     var dataLength: Int
-    var errorCorrectionLevel: ErrorCorrectionLevel
+    var errorCorrectionLevel: String  // Используем String для совместимости с QRCodeErrorCorrectionLevel
     var moduleSize: Int
     
     init(
         data: String = "",
         dataLength: Int = 4,
-        errorCorrectionLevel: ErrorCorrectionLevel = .medium,
+        errorCorrectionLevel: String = "M",
         moduleSize: Int = 4
     ) {
         self.data = data

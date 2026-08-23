@@ -7,6 +7,7 @@ struct CsvBatchPrintSheet: View {
     
     var onPrint: ((CsvParams) -> Void)?
     var onCancel: (() -> Void)?
+    var csvParams: CsvParams?
     
     var body: some View {
         NavigationStack {
@@ -116,7 +117,9 @@ struct CsvBatchPrintSheet: View {
                 
                 HStack(spacing: 16) {
                     Button(action: {
-                        onPrint?(CsvParams(batchCount: count))
+                        // Используем переданные параметры или создаем новые
+                        let params = csvParams ?? CsvParams(batchCount: count)
+                        onPrint?(params)
                         dismiss()
                     }) {
                         Text("Печать")

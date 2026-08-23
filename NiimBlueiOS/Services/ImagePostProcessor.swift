@@ -30,13 +30,15 @@ final class ImagePostProcessor {
             return cgImage
         }
         
-        // Создаем контекст для обработки
+        // Создаем контекст для обработки с оптимизацией памяти
+        // Используем значение bytesPerRow, которое не превышает размер изображения
+        let bytesPerRow = min(pixelWidth * 4, Int(CGFloat(pixelWidth) * CGFloat(pixelHeight) * 4 / Int(pixelHeight)))
         guard let bitmapContext = CGContext(
             data: nil,
             width: pixelWidth,
             height: pixelHeight,
             bitsPerComponent: 8,
-            bytesPerRow: pixelWidth * 4,
+            bytesPerRow: bytesPerRow,
             space: colorSpace,
             bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue
         ) else {
@@ -59,6 +61,9 @@ final class ImagePostProcessor {
             return cgImage
         }
         
+        // Очищаем контекст для освобождения памяти
+        bitmapContext.flush()
+        
         return processedImage
     }
     
@@ -69,13 +74,13 @@ final class ImagePostProcessor {
         // Создаем изображение
         let cgImageRef = cgImage
         
-        // Создаем контекст
+        // Создаем контекст с оптимизацией памяти
         guard let context = CGContext(
             data: nil,
             width: cgImage.width,
             height: cgImage.height,
             bitsPerComponent: 8,
-            bytesPerRow: cgImage.width * 4,
+            bytesPerRow: min(cgImage.width * 4, Int(CGFloat(cgImage.width) * CGFloat(cgImage.height) * 4 / Int(cgImage.height))),
             space: cgImage.colorSpace ?? CGColorSpaceCreateDeviceRGB(),
             bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue
         ) else {
@@ -88,6 +93,9 @@ final class ImagePostProcessor {
         guard let processedImage = context.makeImage() else {
             return nil
         }
+        
+        // Очищаем контекст для освобождения памяти
+        context.flush()
         
         // Конвертируем в PNG
         guard let data = processedImage.jpegData(compressionQuality: 0.85) else {

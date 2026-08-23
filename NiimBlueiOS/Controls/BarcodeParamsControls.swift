@@ -3,6 +3,7 @@ import SwiftUI
 /// Контролы для настройки параметров штрих-кода
 struct BarcodeParamsControls: View {
     @Binding var params: BarcodeParams
+    @Binding var showPicker: Bool
     
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
@@ -14,15 +15,12 @@ struct BarcodeParamsControls: View {
                 .frame(height: 80)
             
             // Тип штрих-кода
-            Text("Тип:")
-                .font(.caption)
-            Picker("Тип", selection: $params.type) {
-                ForEach(BarcodeType.allCases, id: \.self) { type in
-                    Text(type.rawValue).tag(type)
-                }
-            }
-            .pickerStyle(.menu)
-            .frame(width: 200)
+            BarcodeTypeSelector(
+                selectedType: $params.type,
+                showPicker: $showPicker,
+                label: "Тип штрих-кода",
+                showLabel: false
+            )
             
             // Ширина
             Text("Ширина:")
@@ -58,5 +56,8 @@ struct BarcodeParamsControls: View {
 }
 
 #Preview {
-    BarcodeParamsControls(params: .constant(BarcodeParams()))
+    BarcodeParamsControls(
+        params: .constant(BarcodeParams()),
+        showPicker: .constant(true)
+    )
 }

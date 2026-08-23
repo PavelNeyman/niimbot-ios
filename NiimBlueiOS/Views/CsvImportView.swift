@@ -10,6 +10,7 @@ struct CsvImportView: View {
     @State private var showBatchSheet = false
     @State private var batchCount: Int = 1
     @State private var showVariableEditor = false
+    @State private var csvParams: CsvParams?
     
     enum ImportStatus {
         case idle
@@ -115,8 +116,9 @@ struct CsvImportView: View {
             .sheet(isPresented: $showBatchSheet) {
                 CsvBatchPrintSheet(
                     count: $batchCount,
-                    onPrint: { csvParams in
-                        print("Batch print: \(csvParams.batchCount) records")
+                    csvParams: csvParams,
+                    onPrint: { params in
+                        print("Batch print: \(params.batchCount) records")
                     },
                     onCancel: {
                         print("Batch print cancelled")
@@ -144,37 +146,184 @@ struct CsvImportView: View {
     
     private func importFiles() {
         guard !selectedFiles.isEmpty else {
+            showError("Пожалуйста, выберите хотя бы один файл")
             return
         }
         
         importStatus = .parsing
         importMessage = nil
+        loadedTemplate = nil
+        
+        // Валидация файлов
+        if let invalidFiles = validateCSVFiles() {
+            showError("Ошибка валидации:\(invalidFiles.joined(separator: ", "))")
+            return
+        }
+        
+        // Парсинг CSV файлов
+        var fileErrors: [String] = []
         
         for url in selectedFiles {
             let filePath = url.path
-            if let result = CsvParser.parse(filePath: filePath) {
-                if result.success {
-                    if let params = result.params {
-                        importStatus = .success
-                        importMessage = nil
-                        
-                        // Создаем LabelTemplate из CSV данных
-                        let template = labelStorage.saveLabel(
-                            name: params.fileName,
-                            objects: [], // Здесь должна быть логика создания объектов из CSV
-                            labelParams: LabelParams()
-                        )
-                        
-                        if let template = template {
-                            loadedTemplate = template
+            
+            // Валидация пути к файлу
+            if FileManager.default.fileExists(atPath: filePath) {
+                // Проверка на CSV файл
+                if url.pathExtension != "csv" && url.pathExtension != ".csv" {
+                    fileErrors.append("Некорректное расширение файла: \(url.lastPathComponent)")
+                    continue
+                }
+                
+                if let result = CsvParser.parse(filePath: filePath) {
+                    if result.success {
+                        if let params = result.params {
+                            importStatus = .success
+                            importMessage = nil
+                            
+                            // Сохраняем CSV параметры для последующего использования
+                            csvParams = params
+                            
+                            // Создаем LabelTemplate из CSV данных
+                            let template = createLabelTemplateFromCsv(params)
+                            
+                            if let template = template {
+                                loadedTemplate = template
+                            } else {
+                                importStatus = .error
+                                importMessage = "Не удалось создать этикетку из CSV: \(url.lastPathComponent)"
+                            }
+                        } else {
+                            fileErrors.append("Парсинг файла \(url.lastPathComponent): не удалось извлечь параметры")
                         }
+                    } else {
+                        fileErrors.append("Ошибка парсинга файла: \(result.error ?? "Неизвестная ошибка")")
                     }
                 } else {
-                    importStatus = .error
-                    importMessage = result.error
+                    fileErrors.append("Ошибка чтения файла \(url.lastPathComponent): \(result.error ?? "Неизвестная ошибка")")
                 }
+            } else {
+                fileErrors.append("Файл не найден: \(url.lastPathComponent)")
             }
         }
+        
+        // Обработка ошибок
+        if !fileErrors.isEmpty {
+            importStatus = .error
+            let errorMessage = "Ошибка импорта: \(\(fileErrors.joined(separator: "; ")))"
+            importMessage = errorMessage
+        }
+    }
+    
+    /// Валидация файлов CSV перед импортом
+    private func validateCSVFiles() -> [String] {
+        var errors: [String] = []
+        
+        for url in selectedFiles {
+            let filePath = url.path
+            
+            // Проверка существования файла
+            if !FileManager.default.fileExists(atPath: filePath) {
+                errors.append("Файл не существует: \(url.lastPathComponent)")
+                continue
+            }
+            
+            // Проверка расширения
+            if url.pathExtension != "csv" && url.pathExtension != ".csv" {
+                errors.append("Некорректное расширение файла: \(url.pathExtension) (ожидалось .csv)")
+                continue
+            }
+            
+            // Проверка размера файла
+            if FileManager.default.fileSize(forURL: url) == 0 {
+                errors.append("Файл пуст: \(url.lastPathComponent)")
+                continue
+            }
+            
+            // Проверка читаемости файла
+            if let contents = try? String(contentsOf: url, encoding: .utf8) {
+                // Проверка на корректный формат CSV (должен содержать хотя бы одну строку)
+                if contents.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+                    errors.append("Файл пуст или некорректен: \(url.lastPathComponent)")
+                }
+            } else {
+                errors.append("Ошибка при чтении файла: \(url.lastPathComponent)")
+            }
+        }
+        
+        return errors
+    }
+    
+    /// Показывает сообщение об ошибке
+    private func showError(_ message: String) {
+        importStatus = .error
+        importMessage = message
+        // Можно добавить toast notification
+        print("Ошибка импорта CSV: \(message)")
+    }
+    
+    /// Создает LabelTemplate из данных CSV
+    private func createLabelTemplateFromCsv(_ params: CsvParams) -> ExportedLabelTemplate? {
+        // Получаем количество колонок (символов в строке)
+        let columnCount = CsvParser.getColumnCount(csv: params)
+        
+        // Создаем массив объектов из CSV данных
+        var objects: [LabelObject] = []
+        
+        // Создаем текстовый объект с заголовками CSV
+        let headerContent = params.headers.map { "\($0)" }.joined(separator: " | ")
+        let headerObj = LabelObject(
+            type: .text,
+            content: headerContent,
+            labelProps: LabelProps(
+                x: 10,
+                y: 10,
+                width: 100,
+                height: 20,
+                textParams: TextParams(
+                    content: headerContent,
+                    fontSize: 10,
+                    fontFamily: "Arial",
+                    color: "#000000",
+                    justify: .center
+                )
+            )
+        )
+        objects.append(headerObj)
+        
+        // Создаем текстовые объекты для каждой строки данных
+        for (index, row) in params.rows.enumerated() {
+            let rowCount = index + 1
+            let rowContent = row.map { "\($0)" }.joined(separator: " | ")
+            
+            let obj = LabelObject(
+                type: .text,
+                content: rowContent,
+                labelProps: LabelProps(
+                    x: 10,
+                    y: 35 + CGFloat(rowCount) * 25,
+                    width: 100,
+                    height: 20,
+                    textParams: TextParams(
+                        content: rowContent,
+                        fontSize: 10,
+                        fontFamily: "Arial",
+                        color: "#000000",
+                        justify: .center
+                    )
+                )
+            )
+            objects.append(obj)
+        }
+        
+        // Создаем LabelTemplate
+        let template = ExportedLabelTemplate(
+            name: params.fileName,
+            date: Date(),
+            objects: objects,
+            labelParams: LabelParams()
+        )
+        
+        return template
     }
 }
 

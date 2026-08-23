@@ -1,0 +1,8 @@
+{
+  "id": "feature_niimblue-ios-phase-11-final-fix-gaps-add-features_20260822_c5bc",
+  "type": "feature",
+  "status": "done",
+  "created_at": "2026-08-22T20:49:20.893Z",
+  "updated_at": "2026-08-23T00:26:28.519Z",
+  "description": "Fix Phase 7 CSV Batch Print integration, expand test coverage, add QR/barcode features, printer diagnostics, and print history within Week 1"
+}
