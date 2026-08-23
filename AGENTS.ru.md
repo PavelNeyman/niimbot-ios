@@ -1090,7 +1090,7 @@ Process.swift
 - [x] CsvParams model
 - [x] CsvParser
 - [x] Variable interpolation
-- [ ] Batch print support
+- [x] Batch print support
 
 ---
 
