@@ -7,12 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		A1000000000000000000000000000001 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000000000000000000000000000011; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		A1000000000000000000000000000005 /* NiimBlueiOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NiimBlueiOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		A1000000000000000000000000000011 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A1000000000000000000000000000013 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A1000000000000000000000000000014 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A1000000000000000000000000000015 /* NiimBlueiOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = NiimBlueiOS.entitlements; sourceTree = "<group>"; };
@@ -30,7 +28,6 @@
 		A1000000000000000000000000000007 /* NiimBlueiOS */ = {
 			isa = PBXGroup;
 			children = (
-				A1000000000000000000000000000011 /* AppDelegate.swift */,
 				A1000000000000000000000000000013 /* Assets.xcassets */,
 				A1000000000000000000000000000014 /* Info.plist */,
 				A1000000000000000000000000000015 /* NiimBlueiOS.entitlements */,
@@ -102,7 +99,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A1000000000000000000000000000001 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
