@@ -14,6 +14,14 @@
 		A1000000000000000000000000000013 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A1000000000000000000000000000014 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A1000000000000000000000000000015 /* NiimBlueiOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = NiimBlueiOS.entitlements; sourceTree = "<group>"; };
+		A2000000000000000000000000000012 /* NiimBlueIOSTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NiimBlueIOSTests.swift; sourceTree = "<group>"; };
+		A2000000000000000000000000000013 /* BarcodeTypeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarcodeTypeTests.swift; sourceTree = "<group>"; };
+		A2000000000000000000000000000014 /* QRCodeGeneratorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeGeneratorTests.swift; sourceTree = "<group>"; };
+		A2000000000000000000000000000015 /* PrintHistoryServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrintHistoryServiceTests.swift; sourceTree = "<group>"; };
+		A2000000000000000000000000000016 /* CSVParserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CSVParserTests.swift; sourceTree = "<group>"; };
+		A2000000000000000000000000000017 /* PrinterDiagnosticsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrinterDiagnosticsTests.swift; sourceTree = "<group>"; };
+		A2000000000000000000000000000018 /* LabelStorageTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelStorageTests.swift; sourceTree = "<group>"; };
+		A2000000000000000000000000000019 /* CSVImportUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CSVImportUITests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -61,6 +69,21 @@
 			productReference = A1000000000000000000000000000005 /* NiimBlueiOS.app */;
 			productType = "com.apple.product-type.application";
 		};
+		A200000000000000000000000000001B /* NiimBlueiOSTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A2000000000000000000000000000021 /* Build configuration list for PBXNativeTarget "NiimBlueiOSTests" */;
+			buildPhases = (
+				A2000000000000000000000000000022 /* Tests */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = NiimBlueiOSTests;
+			productName = NiimBlueiOSTests;
+			productReference = A200000000000000000000000000001C /* NiimBlueiOSTests.xctest */;
+			productType = "com.apple.product-type.unit-testing";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -90,6 +113,7 @@
 			projectRoot = "";
 			targets = (
 				A1000000000000000000000000000017 /* NiimBlueiOS */,
+				A200000000000000000000000000001B /* NiimBlueiOSTests */,
 			);
 		};
 /* End PBXProject section */
@@ -99,6 +123,21 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A2000000000000000000000000000022 /* Tests */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A200000000000000000000000000000A /* NiimBlueIOSTests.swift in Tests */,
+				A200000000000000000000000000000B /* BarcodeTypeTests.swift in Tests */,
+				A200000000000000000000000000000C /* QRCodeGeneratorTests.swift in Tests */,
+				A200000000000000000000000000000D /* PrintHistoryServiceTests.swift in Tests */,
+				A200000000000000000000000000000E /* CSVParserTests.swift in Tests */,
+				A200000000000000000000000000000F /* PrinterDiagnosticsTests.swift in Tests */,
+				A2000000000000000000000000000010 /* LabelStorageTests.swift in Tests */,
+				A2000000000000000000000000000011 /* CSVImportUITests.swift in Tests */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -159,6 +198,60 @@
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-Ofast";
 				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		A2000000000000000000000000000025 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = NiimBlueiOS/Info.plist;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.niimbot.NiimBlueiOSTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		A2000000000000000000000000000026 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = NiimBlueiOS/Info.plist;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.niimbot.NiimBlueiOSTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};
@@ -224,6 +317,15 @@
 			buildConfigurations = (
 				A1000000000000000000000000000023 /* Debug */,
 				A1000000000000000000000000000024 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A2000000000000000000000000000021 /* Build configuration list for PBXNativeTarget "NiimBlueiOSTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A2000000000000000000000000000025 /* Debug */,
+				A2000000000000000000000000000026 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
